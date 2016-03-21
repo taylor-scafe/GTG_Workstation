@@ -2,11 +2,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SQLDatabase {
-	String ConnectionURL;
-	Connection con = null;
-	Statement stmt = null;
-	ResultSet rs = null;
-	String SQL;
+	private String ConnectionURL;
+	private Connection con = null;
+	private Statement stmt = null;
+	private ResultSet rs = null;
+	private String SQL;
 	public SQLDatabase(String connectionURL) {
 		setConnectionURL(connectionURL);
 	}
@@ -42,27 +42,38 @@ public class SQLDatabase {
 			try {con.close();}
 		catch (Exception e) {}
 	}
-	public ArrayList<Object[]> executeSELECT(String SQL){
+	public String[][] executeSELECT(String SQL){
 		setSQL(SQL);
-		ArrayList<Object[]> output = new ArrayList<Object[]>();
+		String[][] output = null;
 		try {
 			rs = stmt.executeQuery(getSQL());
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnCount = rsmd.getColumnCount();
-			Object[] header = new Object[columnCount];
-			for(int i = 0; i<columnCount;i++ ){
-				//System.out.println(rsmd.getColumnLabel(i+1));
+			String[] header = new String[columnCount];
+			for(int i = 0; i<columnCount;i++ ){//Gets header data
 				header[i] = rsmd.getColumnLabel(i+1);
 			}
-			output.add(header);
+			//output.add(header);
+			ArrayList<String> holder = new ArrayList<String>();
 			while(rs.next()){
-				Object[] rowData = new Object[columnCount];
-				for(int i=0;i<columnCount;i++){
-					rowData[i] =  rs.getObject(i+1);
+				for(String columnName:header){
+					holder.add(rs.getString(columnName));
+					//System.out.println(holder.get(holder.size()-1));
 				}
-				output.add(rowData);
-				//holder.add(getRowData(columnCount));
 			}
+			//System.out.println(holder.size()/columnCount);
+			
+			output = new String[columnCount][holder.size()/columnCount+1];
+			for(int i = 0;i<header.length;i++){
+				output[i][0] = header[i];
+			}
+			for(int i = 0;i<holder.size();i++){
+				output[i%columnCount][(i/columnCount)+1] = holder.get(i);
+				System.out.println(i%columnCount + " "+ (i/columnCount+1) +" "+holder.get(i));
+			}
+			
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -76,50 +87,4 @@ public class SQLDatabase {
 			e.printStackTrace();
 		}
 	}
-
-/*	private ArrayList<Record> getRecordSet(){
-		ArrayList<Record> output = new ArrayList<Record>();
-		ResultSetMetaData rsmd;
-		try {
-
-			rsmd = rs.getMetaData();
-			int columnCount = rsmd.getColumnCount();
-			ArrayList<String[]> holder = new ArrayList<String[]>();
-			String[] header = new String[columnCount];
-			for(int i = 0; i<columnCount;i++ ){
-				//System.out.println(rsmd.getColumnLabel(i+1));
-				header[i] = rsmd.getColumnLabel(i+1);
-			}
-			holder.add(header);
-			while(rs.next()){
-				holder.add(getRowData(columnCount));
-			}
-			
-			
-			
-			
-			//output = new String[holder.size()][columnCount];
-			//for (int x = 0;x <columnCount;x++){
-			//for (int y = 0;y<holder.size();y++){
-			//output[y][x] = holder.get(y)[x];
-			//}
-			//}
-			return output;	
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return output;
-	}
-	public Object[] getRowData(int columnCount){
-		String[] rowData = new String[columnCount];
-		try {
-			for(int i=0;i<columnCount;i++){
-				rowData[i] =  rs.getObject(i+1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return rowData;
-	}*/
-
 }
