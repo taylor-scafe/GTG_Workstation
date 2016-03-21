@@ -42,9 +42,9 @@ public class SQLDatabase {
 			try {con.close();}
 		catch (Exception e) {}
 	}
-	public String[][] executeSELECT(String SQL){
+	public Object[][] executeSELECT(String SQL){
 		setSQL(SQL);
-		String[][] output = null;
+		Object[][] output = null;
 		try {
 			rs = stmt.executeQuery(getSQL());
 			ResultSetMetaData rsmd = rs.getMetaData();
@@ -54,16 +54,16 @@ public class SQLDatabase {
 				header[i] = rsmd.getColumnLabel(i+1);
 			}
 			//output.add(header);
-			ArrayList<String> holder = new ArrayList<String>();
+			ArrayList<Object> holder = new ArrayList<Object>();
 			while(rs.next()){
-				for(String columnName:header){
-					holder.add(rs.getString(columnName));
+				for(Object columnName:header){
+					holder.add(rs.getObject((String)columnName));
 					//System.out.println(holder.get(holder.size()-1));
 				}
 			}
 			//System.out.println(holder.size()/columnCount);
 			
-			output = new String[columnCount][holder.size()/columnCount+1];
+			output = new Object[columnCount][holder.size()/columnCount+1];
 			for(int i = 0;i<header.length;i++){
 				output[i][0] = header[i];
 			}
