@@ -63,13 +63,13 @@ public class SQLDatabase {
 			}
 			//System.out.println(holder.size()/columnCount);
 			
-			output = new Object[columnCount][holder.size()/columnCount+1];
+			output = new Object[holder.size()/columnCount+1][columnCount];
 			for(int i = 0;i<header.length;i++){
-				output[i][0] = header[i];
+				output[0][i] = header[i];
 			}
 			for(int i = 0;i<holder.size();i++){
-				output[i%columnCount][(i/columnCount)+1] = holder.get(i);
-				System.out.println(i%columnCount + " "+ (i/columnCount+1) +" "+holder.get(i));
+				output[(i/columnCount)+1][i%columnCount] = holder.get(i);
+				//System.out.println(i%columnCount + " "+ (i/columnCount+1) +" "+holder.get(i));
 			}
 			
 			
