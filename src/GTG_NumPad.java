@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -6,20 +8,26 @@ import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 
 public class GTG_NumPad extends JFrame {
 	private JButton btnDigit1, btnDigit2, btnDigit3, btnDigit4, btnDigit5, btnDigit6, btnDigit7, btnDigit8, btnDigit9, btnDigit0;
 	private JButton btnBlank, btnDecimal, btnADD, btnSUBTRACT, btnBackspace, btnMULTPLY, btnDIVIDE, btnClear, btnLeftParen, btnRightParen, btnExecute;
-	JTextPane txtpnCurrentData, txtpnNewData, txtpnFinalData;
+	JTextPane incomingData, currentExpr, result;
 	JLabel lblOperator, lblEquals;
 	private JPanel NumPad;
+	private ButtonHandler bh;
+	private JRadioButton rdbtnSet,rdbtnAdd,rdbtnSub;
 	public GTG_NumPad() {
 
 		NumPad = new JPanel();
@@ -29,14 +37,14 @@ public class GTG_NumPad extends JFrame {
 
 
 		//--------------Number Panel-----------------------------------------------
-
+		ButtonHandler bh = new ButtonHandler();
+		
 		JPanel NumPadPanel = new JPanel();
 		NumPad.add(NumPadPanel, BorderLayout.CENTER);
 		NumPadPanel.setLayout(new GridLayout(0, 3, 0, 0));
 
 		btnDigit1 = new JButton("1");
 		NumPadPanel.add(btnDigit1);
-		//btnDigit1.addActionListener(numberPress);
 
 		btnDigit2 = new JButton("2");
 		NumPadPanel.add(btnDigit2);
@@ -69,7 +77,8 @@ public class GTG_NumPad extends JFrame {
 		btnDigit0 = new JButton("0");
 		NumPadPanel.add(btnDigit0);
 
-		btnDecimal = new JButton(".");
+		btnDecimal = new JButton("");
+		btnDecimal.setEnabled(false);
 		NumPadPanel.add(btnDecimal);
 
 		btnADD = new JButton("+");
@@ -99,7 +108,12 @@ public class GTG_NumPad extends JFrame {
 
 		btnExecute = new JButton("Execute");
 		NumPadPanel.add(btnExecute);
-
+		
+		Component [] buttons = NumPadPanel.getComponents();
+		for(Component c : buttons){
+			JButton b = ((JButton)c);
+			b.addActionListener(bh);
+		}
 		//--------------Operations Panel-------------------------------------------
 
 		JPanel OperationPanel = new JPanel();
@@ -108,65 +122,102 @@ public class GTG_NumPad extends JFrame {
 		ButtonGroup operatorGroup = new ButtonGroup();
 		OperationPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		JRadioButton rdbtnSet = new JRadioButton("Set");
+		rdbtnSet = new JRadioButton("Set");
 		rdbtnSet.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		operatorGroup.add(rdbtnSet);
 		rdbtnSet.setSelected(true);
 		OperationPanel.add(rdbtnSet);
 
-		JRadioButton rdbtnAdd = new JRadioButton("Add");
+		rdbtnAdd = new JRadioButton("Add");
 		rdbtnAdd.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		operatorGroup.add(rdbtnAdd);
 		OperationPanel.add(rdbtnAdd);
 
-		JRadioButton rdbtnSubtract = new JRadioButton("Subtract");
-		rdbtnSubtract.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		operatorGroup.add(rdbtnSubtract);
-		OperationPanel.add(rdbtnSubtract);
+		rdbtnSub = new JRadioButton("Subtract");
+		rdbtnSub.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		operatorGroup.add(rdbtnSub);
+		OperationPanel.add(rdbtnSub);
 
 		//--------------Data Panel--------------------------------------------------
 
 		JPanel DatafieldPanel = new JPanel();
 		NumPad.add(DatafieldPanel, BorderLayout.NORTH);
 
-		txtpnCurrentData = new JTextPane();
-		txtpnCurrentData.setEditable(false);
-		txtpnCurrentData.setText("Incoming Data");
-		DatafieldPanel.add(txtpnCurrentData);
+		incomingData = new JTextPane();
+		incomingData.setEditable(false);
+		incomingData.setText("0");
+		DatafieldPanel.add(incomingData);
 
 		lblOperator = new JLabel("set");
 		DatafieldPanel.add(lblOperator);
 
-		txtpnNewData = new JTextPane();
-		txtpnNewData.setText("0");
-		DatafieldPanel.add(txtpnNewData);
+		currentExpr = new JTextPane();
+		currentExpr.setText("");
+		DatafieldPanel.add(currentExpr);
 
 		lblEquals = new JLabel("=");
 		DatafieldPanel.add(lblEquals);
 
-		txtpnFinalData = new JTextPane();
-		txtpnFinalData.setEditable(false);
-		txtpnFinalData.setText("0");
-		DatafieldPanel.add(txtpnFinalData);
+		result = new JTextPane();
+		result.setEditable(false);
+		result.setText("0");
+		DatafieldPanel.add(result);
 
 		pack();
 		setVisible(true);
 
 		//------------Action Handlers----------------------------------------------
 	}
-	public class numberPress implements ActionListener{
+	private class ButtonHandler implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent ea) {
 			JButton buttonPressed = (JButton) ea.getSource();
 			if(buttonPressed.getText()=="Clear"){
-				txtpnNewData.setText("");
+				currentExpr.setText("");
 			}
 			else if (buttonPressed.getText()=="Backspace"){
-				txtpnNewData.setText(txtpnNewData.getText().substring(0, txtpnNewData.getText().length()-1));
+				currentExpr.setText(currentExpr.getText().substring(0, currentExpr.getText().length()-1));
+			}
+			else if(buttonPressed.getText() == "Execute"){
+				if(!doMath()){
+					JOptionPane.showMessageDialog(null, "Invalid Input");
+				}
 			}
 			else{
-				txtpnNewData.setText(txtpnNewData.getText()+buttonPressed.getText());
+				currentExpr.setText(currentExpr.getText()+buttonPressed.getText());
 			}
 		}
+	}
+	
+	private boolean doMath(){
+		String expr = currentExpr.getText();
+		try{
+			ArrayList<Character> aExpr = new ArrayList<Character>();
+			for(int i = 0; i < expr.length(); i++){
+				aExpr.add(expr.charAt(i));
+			}
+			int iResult = math.eval(aExpr);
+			System.out.println("iResult: " + iResult);
+			if(rdbtnSet.isSelected()){
+				result.setText("" + iResult);
+				currentExpr.setText("");
+				return true;
+			}
+			else if(rdbtnAdd.isSelected()){
+				int iIncoming = Integer.parseInt(incomingData.getText());
+				int iFinal = iResult + iIncoming;
+				result.setText("" + iFinal);
+				currentExpr.setText("");
+				return true;
+			}
+			else{
+				int iIncoming = Integer.parseInt(incomingData.getText());
+				int iFinal = iResult - iIncoming;
+				result.setText("" + iFinal);
+				currentExpr.setText("");
+				return true;
+			}
+		}catch(Exception e){e.printStackTrace();}
+		return false;
 	}
 }

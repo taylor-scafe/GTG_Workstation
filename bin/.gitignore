@@ -3,8 +3,7 @@
 /GTG_NumPad$numberPress.class
 /GTG_NumPad.class
 /GTG_TableDisplay.class
-/INSERT_GUI$Execute.class
-/INSERT_GUI.class
-/SELECT_GUI.class
 /SQLDatabase.class
-/TestMain.class
+/GTG_NumPad$ButtonHandler.class
+/GTG_NumPad$math.class
+/math.class
