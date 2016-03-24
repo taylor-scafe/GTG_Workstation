@@ -1,7 +1,14 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 public class GTG_Utility {
 final static int maxsizeSize = 4;
 final static int maxsizeColor = 20;
@@ -115,4 +122,42 @@ public static ArrayList<String> updateList = new ArrayList<String>();
 	}	
 //---------------------END OF COMBOBOXES-----------------------------------	
 	
+	
+//--------------------  Login Reader ---------------------------------------
+//--------------------- 3/24/2016 ----------------------------------------
+//-------------------- Taylor Scafe --------------------------------------	
+	public static String[] getLogin(){
+		String[] output = new String[5];
+		try{
+			String line = null;
+			FileReader fileReader = new FileReader("login.txt");
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			for(int i=0;i<output.length;i++){
+				output[i] = bufferedReader.readLine();
+			}
+			bufferedReader.close();
+			fileReader.close();
+		}
+		catch(IOException e){
+		};
+		return output;
+	}
+
+	public static String[] promptLogin() {//http://www.asjava.com/swing/joptionpane-showinputdialog-with-password/
+		String[] output = new String[5];
+		JLabel jUserName = new JLabel("User Name");
+        JTextField userName = new JTextField();
+        JLabel jPassword = new JLabel("Password");
+        JTextField password = new JPasswordField();
+        Object[] ob = {jUserName, userName, jPassword, password};
+        int result = JOptionPane.showConfirmDialog(null, ob, "Username and Password", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+        	output[0] = "//acaddb.graceland.edu:1433";
+    		output[1] = "JAVA_CLASS";
+        	output[2] = userName.getText();
+            output[3] = password.getText();
+    		output[4] = null;
+        }
+        return output;
+	}
 }
