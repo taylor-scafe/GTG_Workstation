@@ -1,6 +1,4 @@
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
-
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
@@ -25,7 +23,11 @@ public class GTG_MainGUI extends JFrame{
 	window.setLayout(new FlowLayout());
 	window.add(new GTG_TableDisplay(resultSet2));
 	JComboBox<String> selectionBox = GTG_Utility.SimpleSQLComboBox(combobox1);
+	JComboBox<String> selectionBox2 = GTG_Utility.SimpleSQLComboBox(combobox1);
+	GTG_Utility.addSizeComboBox(selectionBox);
 	window.add(selectionBox);
+	GTG_Utility.addSizeComboBox(selectionBox2);
+	window.add(selectionBox2);
 	//JScrollPane table = new JScrollPane(new GTG_TableDisplay(resultSet2));
 	//table.setPreferredSize(window.getPreferredSize());
 	//window.add(table);
@@ -35,6 +37,6 @@ public class GTG_MainGUI extends JFrame{
 	window.setSize(800, 800);
 	
 	window.setVisible(true);
-	
+	GTG_Utility.addSize();
 	}
 }
