@@ -1,23 +1,31 @@
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
 public class GTG_MainGUI extends JFrame{
-	static Object[][] resultSet;
+	public static Object[][] resultSet;
+	public static Object[][] combobox1;
 	public static void main (String[] args) {
 		//GTG_NumPad numPad = new GTG_NumPad();
 		//numPad.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		SQLDatabase DB = new SQLDatabase("jdbc:sqlserver://acaddb.graceland.edu:1433;"
 				+ "databaseName=JAVA_CLASS;user=JavaStudent;password=SQLisfun!");
 		DB.OpenSQLConnection();
-		resultSet = DB.executeSELECT("SELECT * FROM customer");
+		resultSet = DB.executeSELECT("SELECT * FROM customer ORDER BY lastName");
+		combobox1 = DB.executeSELECT("SELECT DISTINCT firstName FROM customer ORDER BY firstName");
 		DB.CloseSQLConnection();
 		GTG_TestPanel(resultSet);
 	}	
 	public static void GTG_TestPanel(Object[][] resultSet2){
 	JFrame window = new JFrame();
 	window.getContentPane();
-
+	window.setLayout(new FlowLayout());
 	window.add(new GTG_TableDisplay(resultSet2));
+	JComboBox<String> selectionBox = GTG_Utility.SimpleSQLComboBox(combobox1);
+	window.add(selectionBox);
 	//JScrollPane table = new JScrollPane(new GTG_TableDisplay(resultSet2));
 	//table.setPreferredSize(window.getPreferredSize());
 	//window.add(table);
