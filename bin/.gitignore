@@ -1,9 +1,7 @@
 /DigitButton.png
 /GTG_MainGUI.class
-/GTG_NumPad$numberPress.class
+/GTG_NumPad$ButtonHandler.class
 /GTG_NumPad.class
 /GTG_TableDisplay.class
 /SQLDatabase.class
-/GTG_NumPad$ButtonHandler.class
-/GTG_NumPad$math.class
 /math.class
