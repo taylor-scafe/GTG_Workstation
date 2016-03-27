@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +15,7 @@ private static ArrayList<JComboBox<String>> sizeComboBoxes = new ArrayList<JComb
 private static ArrayList<JComboBox<String>> colorComboBoxes = new ArrayList<JComboBox<String>>();
 public static JComboBox<String> jcbSizeTemplate;
 public static JComboBox<String> jcbColorTemplate;
-public static boolean updateNeeded;
-public static ArrayList<String> updateList = new ArrayList<String>();
+
 
 	
 //--------------------  ComboBoxes ---------------------------------------
@@ -62,8 +60,8 @@ public static ArrayList<String> updateList = new ArrayList<String>();
 					for(JComboBox<String> comboBox:sizeComboBoxes){
 						comboBox.addItem(strNewSize);
 					}
-					updateNeeded = true;
-					updateList.add("INSERT INTO Sizes VALUES("+strNewSize+")");
+					GTG_MainGUI.updateNeeded = true;
+					GTG_MainGUI.updateList.add("INSERT INTO Sizes VALUES("+strNewSize+")");
 				}
 			}
 		}
@@ -106,8 +104,8 @@ public static ArrayList<String> updateList = new ArrayList<String>();
 					for(JComboBox<String> comboBox:sizeComboBoxes){
 						comboBox.addItem(strNewColor);
 					}
-					updateNeeded = true;
-					updateList.add("INSERT INTO Colors VALUES("+strNewColor+")");
+					GTG_MainGUI.updateNeeded = true;
+					GTG_MainGUI.updateList.add("INSERT INTO Colors VALUES("+strNewColor+")");
 				}
 			}
 		}
@@ -129,7 +127,6 @@ public static ArrayList<String> updateList = new ArrayList<String>();
 	public static String[] getLogin(){
 		String[] output = new String[5];
 		try{
-			String line = null;
 			FileReader fileReader = new FileReader("login.txt");
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			for(int i=0;i<output.length;i++){

@@ -2,4 +2,4 @@
 JAVA_CLASS
 JavaStudent
 SQLisfun!
-Inventory Workstation
+debug
