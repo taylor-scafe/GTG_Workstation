@@ -1,0 +1,5 @@
+//acaddb.graceland.edu:1433
+JAVA_CLASS
+JavaStudent
+SQLisfun!
+debug
