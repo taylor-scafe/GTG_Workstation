@@ -15,7 +15,7 @@ private static ArrayList<JComboBox<String>> sizeComboBoxes = new ArrayList<JComb
 private static ArrayList<JComboBox<String>> colorComboBoxes = new ArrayList<JComboBox<String>>();
 public static JComboBox<String> jcbSizeTemplate;
 public static JComboBox<String> jcbColorTemplate;
-
+public static GTG_DB_Interface DB;
 
 	
 //--------------------  ComboBoxes ---------------------------------------
@@ -60,8 +60,8 @@ public static JComboBox<String> jcbColorTemplate;
 					for(JComboBox<String> comboBox:sizeComboBoxes){
 						comboBox.addItem(strNewSize);
 					}
-					GTG_Main.DB.setUpdateNeeded(true);
-					GTG_Main.DB.addTOupdateList("INSERT INTO Sizes VALUES("+strNewSize+")");
+					DB.setUpdateNeeded(true);
+					DB.addTOupdateList("INSERT INTO Sizes VALUES("+strNewSize+")");
 				}
 			}
 		}
@@ -104,8 +104,8 @@ public static JComboBox<String> jcbColorTemplate;
 					for(JComboBox<String> comboBox:sizeComboBoxes){
 						comboBox.addItem(strNewColor);
 					}
-					GTG_Main.DB.setUpdateNeeded(true);
-					GTG_Main.DB.addTOupdateList("INSERT INTO Sizes VALUES("+strNewColor+")");
+					DB.setUpdateNeeded(true);
+					DB.addTOupdateList("INSERT INTO Sizes VALUES("+strNewColor+")");
 				}
 			}
 		}
@@ -136,6 +136,7 @@ public static JComboBox<String> jcbColorTemplate;
 			fileReader.close();
 		}
 		catch(IOException e){
+			System.out.println("Login file not found. Switching to manual login");
 		};
 		return output;
 	}
@@ -150,7 +151,7 @@ public static JComboBox<String> jcbColorTemplate;
         int result = JOptionPane.showConfirmDialog(null, ob, "Username and Password", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
         	output[0] = "//acaddb.graceland.edu:1433";
-    		output[1] = "JAVA_CLASS";
+    		output[1] = "GTG_DB";
         	output[2] = userName.getText();
             output[3] = password.getText();
     		output[4] = null;

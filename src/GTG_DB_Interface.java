@@ -1,20 +1,26 @@
 import java.util.ArrayList;
 
-public class GTG_DB_Interface extends SQLDatabase{
+public class GTG_DB_Interface{
 	//Result Set Storage
 	private Object[][] RSshirtTypes;
 	private Object[][] RSsizes;
 	private Object[][] RScolors;
-	
+	private SQLDatabase GTG_DB;
 	//SQL Queue
 	private boolean updateNeeded;
 	private ArrayList<String> updateList = new ArrayList<String>();
 	
 	public GTG_DB_Interface(String connectionURL) {
-		super(connectionURL);
-		//Open Connection
-		//Capture all needed information
-		//Close Connection
+		
+		GTG_DB = new SQLDatabase(connectionURL);
+		if(GTG_DB.OpenSQLConnection()){
+			RSsizes = GTG_DB.executeSELECT("SELECT sizeName FROM size");
+			RScolors = GTG_DB.executeSELECT("SELECT colorName FROM color");
+			GTG_DB.CloseSQLConnection();
+		}
+		else{
+			GTG_DB.CloseSQLConnection();
+		}
 	}
 	public void runQueue(){
 		//Open Connection
@@ -42,8 +48,8 @@ public class GTG_DB_Interface extends SQLDatabase{
 		updateList.add(input);
 	}
 	public boolean isConnected() {
-		boolean output = OpenSQLConnection();
-		CloseSQLConnection();
+		boolean output = GTG_DB.OpenSQLConnection();
+		GTG_DB.CloseSQLConnection();
 		return output;
 	}
 	

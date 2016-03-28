@@ -14,6 +14,7 @@ import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class GTG_NumPad extends JFrame {
 	private JButton btnDigit1, btnDigit2, btnDigit3, btnDigit4, btnDigit5, btnDigit6, btnDigit7, btnDigit8, btnDigit9, btnDigit0;
 	private JButton btnBlank, btnDecimal, btnADD, btnSUBTRACT, btnBackspace, btnMULTPLY, btnDIVIDE, btnClear, btnLeftParen, btnRightParen, btnExecute;
