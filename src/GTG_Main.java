@@ -22,6 +22,8 @@ public class GTG_Main{
 		}
 		else{
 			GTG_MainGUI mainWindow = new GTG_MainGUI(credentials[5]);
+			//GTG_TestGUI testWindow = new GTG_TestGUI(credentials[5]); //Uncomment this line and next line to activate GTG_TestGUI
+			//testWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}
 	}
