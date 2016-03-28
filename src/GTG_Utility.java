@@ -60,8 +60,8 @@ public static JComboBox<String> jcbColorTemplate;
 					for(JComboBox<String> comboBox:sizeComboBoxes){
 						comboBox.addItem(strNewSize);
 					}
-					GTG_MainGUI.updateNeeded = true;
-					GTG_MainGUI.updateList.add("INSERT INTO Sizes VALUES("+strNewSize+")");
+					GTG_Main.DB.setUpdateNeeded(true);
+					GTG_Main.DB.addTOupdateList("INSERT INTO Sizes VALUES("+strNewSize+")");
 				}
 			}
 		}
@@ -104,8 +104,8 @@ public static JComboBox<String> jcbColorTemplate;
 					for(JComboBox<String> comboBox:sizeComboBoxes){
 						comboBox.addItem(strNewColor);
 					}
-					GTG_MainGUI.updateNeeded = true;
-					GTG_MainGUI.updateList.add("INSERT INTO Colors VALUES("+strNewColor+")");
+					GTG_Main.DB.setUpdateNeeded(true);
+					GTG_Main.DB.addTOupdateList("INSERT INTO Sizes VALUES("+strNewColor+")");
 				}
 			}
 		}
@@ -154,6 +154,9 @@ public static JComboBox<String> jcbColorTemplate;
         	output[2] = userName.getText();
             output[3] = password.getText();
     		output[4] = null;
+        }
+        else if (result == JOptionPane.CANCEL_OPTION || result == JOptionPane.CLOSED_OPTION){
+        	output[0] = "KILL";
         }
         return output;
 	}
