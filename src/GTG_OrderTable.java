@@ -1,14 +1,12 @@
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
+import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class GTG_OrderTable extends JPanel {
@@ -29,8 +27,8 @@ public class GTG_OrderTable extends JPanel {
 			jlbHeader.setText(headers[x]);
 			jlbHeader.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			add(jlbHeader, getConstraints(x,0));
-			y++;
 		}
+		y++;
 		addOrderLine();
 	}
 	public void addOrderLine(){
@@ -67,6 +65,9 @@ public class GTG_OrderTable extends JPanel {
 		temp.gridx = x;
 		temp.gridy = y;
 		temp.insets = new Insets(5,5,5,5);
+		//temp.weighty = 0;
+		temp.anchor = GridBagConstraints.BELOW_BASELINE;
+		//System.out.println(x + " "+y);
 		return temp;
 	}
 
