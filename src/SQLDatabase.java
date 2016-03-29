@@ -27,7 +27,7 @@ public class SQLDatabase {
 			stmt = con.createStatement();
 			return true;
 		} catch (ClassNotFoundException | SQLException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			return false;
 		}
 	}

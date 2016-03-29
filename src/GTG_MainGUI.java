@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
 public class GTG_MainGUI extends JFrame{
@@ -43,14 +42,14 @@ public class GTG_MainGUI extends JFrame{
 		
 
 		JScrollPane scrollPane = new JScrollPane(new GTG_TableDisplay(GTG_Utility.DB.getRSsizes()));
-		//jpOrderManager.add(scrollPane);
+		jpOrderManager.add(scrollPane);
 		mainOrderTable = new GTG_OrderTable();
 		jpPointOfSale.add(mainOrderTable,BorderLayout.CENTER);
 		mainOrderTable.addOrderLine();
 		mainOrderTable.addOrderLine();
 		newOrderLine = new JButton("New Order Line");
 		jpPointOfSale.add(newOrderLine,BorderLayout.SOUTH);
-		
+		jpMaterialInventory.add(new GTG_NumPad());
 
 		add(tabbedPane);
 		setVisible(true);
