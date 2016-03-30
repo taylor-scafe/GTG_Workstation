@@ -7,17 +7,21 @@ public class GTG_Main {
 		String[] credentials;
 		credentials = GTG_Utility.getLogin();
 		GTG_Utility.DB = new GTG_DB_Interface("jdbc:sqlserver:"+credentials[0]+";databaseName="+credentials[1]+";user="+credentials[2]+";password="+credentials[3]); 
-		do{
+		while(!GTG_Utility.DB.isConnected()){
 			if(credentials[0]=="KILL"){
 				break;
 			}
-			else if(!GTG_Utility.DB.isConnected()){
+			else{
 				credentials = GTG_Utility.promptLogin();
 				GTG_Utility.DB = new GTG_DB_Interface("jdbc:sqlserver:"+credentials[0]+";databaseName="+credentials[1]+";user="+credentials[2]+";password="+credentials[3]); 
-				JOptionPane.showMessageDialog(null, "Incorrect Username or Password","Input Error", JOptionPane.WARNING_MESSAGE);
-				credentials[0]=null;
+				if(!GTG_Utility.DB.isConnected()&& credentials[0] != "KILL"){
+					JOptionPane.showMessageDialog(null, "Incorrect Username or Password","Input Error", JOptionPane.WARNING_MESSAGE);
+				}
+				else{
+					break;
+				}
 			}
-		}while(credentials[0]==null);
+		}
 		if(credentials[0]=="KILL"){
 			GTG_Utility.DB = null;
 			//EXIT PROGRAM! ABANDON ALL HOPE!!! (or someone forgot their password)
