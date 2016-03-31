@@ -1,3 +1,5 @@
+import java.awt.Font;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -19,6 +21,9 @@ public class GTG_TableDisplay extends JScrollPane {//Creates a scrollable Table 
 			}
 		}
 		JTable table = new JTable(outputTable, strHeaders);
+		table.setEnabled(false);
+		table.setRowHeight(24);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		setViewportView(table);//Adds table to scroll panel
 	}
 

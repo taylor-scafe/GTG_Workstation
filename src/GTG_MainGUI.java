@@ -41,8 +41,9 @@ public class GTG_MainGUI extends JFrame{
 		tabbedPane.setSize(100, 100);
 		
 
-		JScrollPane scrollPane = new JScrollPane(new GTG_TableDisplay(GTG_Utility.DB.getRSsizes()));
-		jpOrderManager.add(scrollPane);
+		//JScrollPane scrollPane = new JScrollPane(new GTG_TableDisplay(GTG_Utility.DB.getRSsizes()));
+		JScrollPane scpInventory = new JScrollPane(new GTG_Inventory());
+		jpOrderManager.add(scpInventory);
 		mainOrderTable = new GTG_OrderTable();
 		jpPointOfSale.add(mainOrderTable,BorderLayout.CENTER);
 		mainOrderTable.addOrderLine();
