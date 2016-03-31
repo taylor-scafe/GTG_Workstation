@@ -3,7 +3,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,8 +10,6 @@ import javax.swing.JTabbedPane;
 
 @SuppressWarnings("serial")
 public class GTG_MainGUI extends JFrame{
-	//Graphic Elements
-	private JButton newOrderLine;
 	private GTG_OrderTable mainOrderTable;
 	private JPanel jpMaterialInventory, jpOrderManager, jpPointOfSale;
 	
@@ -45,13 +42,12 @@ public class GTG_MainGUI extends JFrame{
 		JScrollPane scpInventory = new JScrollPane(new GTG_Inventory());
 		jpOrderManager.add(scpInventory);
 		mainOrderTable = new GTG_OrderTable();
-		jpPointOfSale.add(mainOrderTable,BorderLayout.CENTER);
+		jpPointOfSale.add(mainOrderTable);
 		mainOrderTable.addOrderLine();
 		mainOrderTable.addOrderLine();
-		newOrderLine = new JButton("New Order Line");
-		jpPointOfSale.add(newOrderLine,BorderLayout.SOUTH);
-		jpMaterialInventory.add(new GTG_NumPad());
-
+		//newOrderLine = new JButton("New Order Line");
+		//jpPointOfSale.add(newOrderLine,BorderLayout.SOUTH);
+		//jpMaterialInventory.add(new GTG_NumPad());
 		add(tabbedPane);
 		setVisible(true);
 		
