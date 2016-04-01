@@ -37,11 +37,11 @@ public class GTG_NumPad extends JPanel {
 	
 	private JButton btnDigit1, btnDigit2, btnDigit3, btnDigit4, btnDigit5, btnDigit6, btnDigit7, btnDigit8, btnDigit9, btnDigit0;
 	private JButton btnADD, btnSUBTRACT, btnBackspace, btnMULTPLY, btnClear, btnLeftParen, btnRightParen, btnExecute;
-	JTextField currentExpr,incomingData, result;
+	JTextField currentExpr,incomingData, result; 
 	JLabel lblOperator, lblEquals;
 	
 	private ButtonHandler bh;
-	private JRadioButton rdbtnSet,rdbtnAdd,rdbtnSub;
+	//private JRadioButton rdbtnSet,rdbtnAdd,rdbtnSub;
 	private ButtonGroup operatorGroup;
 	public GTG_NumPad() {
 		//super("GTG Calculator");
@@ -134,7 +134,7 @@ public class GTG_NumPad extends JPanel {
 		}
 		//--------------Operations Panel-------------------------------------------
 
-		JPanel OperationPanel = new JPanel();
+/*		JPanel OperationPanel = new JPanel();
 		add(OperationPanel, BorderLayout.SOUTH);
 
 		operatorGroup = new ButtonGroup();
@@ -158,7 +158,7 @@ public class GTG_NumPad extends JPanel {
 		rdbtnSub.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		operatorGroup.add(rdbtnSub);
 		OperationPanel.add(rdbtnSub);
-		OperationPanel.setBackground(new Color(51,204,255));
+		OperationPanel.setBackground(new Color(51,204,255));*/
 
 		//--------------Data Panel--------------------------------------------------
 
@@ -203,7 +203,7 @@ public class GTG_NumPad extends JPanel {
 	private class ButtonHandler implements ActionListener,KeyListener{
 		@Override
 		public void actionPerformed(ActionEvent ea) {
-			if(rdbtnSet.isSelected()){
+			/*if(rdbtnSet.isSelected()){
 				
 			}
 			else if(rdbtnAdd.isSelected()){
@@ -211,7 +211,7 @@ public class GTG_NumPad extends JPanel {
 			}
 			else{
 				
-			}
+			}*/
 			JButton buttonPressed = (JButton) ea.getSource();
 			if(buttonPressed.getText()=="Clear"){
 				currentExpr.setText("");
@@ -254,7 +254,7 @@ public class GTG_NumPad extends JPanel {
 			}
 			int iResult = math.eval(aExpr);
 			//System.out.println("iResult: " + iResult);
-			if(rdbtnSet.isSelected()){
+/*			if(rdbtnSet.isSelected()){
 				result.setText("" + iResult);
 				currentExpr.setText("");
 				return true;
@@ -266,13 +266,13 @@ public class GTG_NumPad extends JPanel {
 				currentExpr.setText("");
 				return true;
 			}
-			else{
+			else{*/
 				int iIncoming = Integer.parseInt(incomingData.getText());
 				int iFinal = iResult - iIncoming;
 				result.setText("" + iFinal);
 				currentExpr.setText("");
 				return true;
-			}
+			//}
 		}catch(Exception e){e.printStackTrace();}
 		return false;
 	}
