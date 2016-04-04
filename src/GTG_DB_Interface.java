@@ -7,6 +7,7 @@ public class GTG_DB_Interface{
 	private Object[][] RScolors;
 	private SQLDatabase GTG_DB;
 	private Object[][] RSinventory;
+	private Object[][] RSstates;
 	//SQL Queue
 	private boolean updateNeeded;
 	private ArrayList<String> updateList = new ArrayList<String>();
@@ -19,6 +20,7 @@ public class GTG_DB_Interface{
 			RSsizes = GTG_DB.executeSELECT("SELECT sizeName FROM size");
 			RScolors = GTG_DB.executeSELECT("SELECT colorName FROM color");
 			RSinventory = GTG_DB.executeSELECT("SELECT * FROM inventory");
+			RSstates = GTG_DB.executeSELECT("select postalCode from state");
 			GTG_DB.CloseSQLConnection();
 		}
 		else{
@@ -40,6 +42,9 @@ public class GTG_DB_Interface{
 	}
 	public Object[][] getRScolors() {
 		return RScolors;
+	}
+	public Object[][] getRSstates() {
+		return RSstates;
 	}
 	public Object[][] getInventory() {
 		return RSinventory;

@@ -11,7 +11,7 @@ import javax.swing.JTabbedPane;
 @SuppressWarnings("serial")
 public class GTG_MainGUI extends JFrame{
 	private GTG_OrderTable mainOrderTable;
-	private JPanel jpMaterialInventory, jpOrderManager, jpPointOfSale;
+	private JPanel jpMaterialInventory, jpOrderManager, jpPointOfSale,jpOrderForm;
 	
 	//End of Graphic Elements
 	public GTG_MainGUI(String credentials){
@@ -29,11 +29,13 @@ public class GTG_MainGUI extends JFrame{
 		jpOrderManager = new JPanel();
 		jpPointOfSale = new JPanel();
 		jpPointOfSale.setLayout(new BorderLayout());
+		jpOrderForm = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Point of Sale", jpPointOfSale);
 		tabbedPane.addTab("Material Inventory", jpMaterialInventory);
 		tabbedPane.addTab("Order Manager", jpOrderManager);
+		tabbedPane.addTab("Order Form", jpOrderForm);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		tabbedPane.setSize(100, 100);
 		
@@ -43,6 +45,7 @@ public class GTG_MainGUI extends JFrame{
 		jpOrderManager.add(scpInventory);
 		mainOrderTable = new GTG_OrderTable();
 		jpPointOfSale.add(mainOrderTable);
+		jpOrderForm.add(new GTG_OrderForm());
 		mainOrderTable.addOrderLine();
 		mainOrderTable.addOrderLine();
 		//newOrderLine = new JButton("New Order Line");
