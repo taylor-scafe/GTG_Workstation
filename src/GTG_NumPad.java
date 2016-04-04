@@ -1,10 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,16 +9,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-
-import java.awt.FlowLayout;
-
-import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 /*
  * TO DO LIST:
  * 	-MAKE lblOperator LABLE CHANGE WITH RADIO BTN SELECTED
@@ -41,9 +34,7 @@ public class GTG_NumPad extends JPanel {
 	JLabel lblOperator, lblEquals;
 	
 	private ButtonHandler bh;
-	//private JRadioButton rdbtnSet,rdbtnAdd,rdbtnSub;
-	private ButtonGroup operatorGroup;
-	public GTG_NumPad() {
+	public GTG_NumPad(int input) {
 		//super("GTG Calculator");
 		setBackground(Color.BLUE);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -132,33 +123,6 @@ public class GTG_NumPad extends JPanel {
 			b.setBackground(Color.lightGray);
 			b.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		}
-		//--------------Operations Panel-------------------------------------------
-
-/*		JPanel OperationPanel = new JPanel();
-		add(OperationPanel, BorderLayout.SOUTH);
-
-		operatorGroup = new ButtonGroup();
-		OperationPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		rdbtnSet = new JRadioButton("Set");
-		rdbtnSet.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		rdbtnSet.setBackground(new Color(51,204,255));
-		operatorGroup.add(rdbtnSet);
-		rdbtnSet.setSelected(true);
-		OperationPanel.add(rdbtnSet);
-
-		rdbtnAdd = new JRadioButton("Add");
-		rdbtnAdd.setBackground(new Color(51,204,255));
-		rdbtnAdd.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		operatorGroup.add(rdbtnAdd);
-		OperationPanel.add(rdbtnAdd);
-
-		rdbtnSub = new JRadioButton("Subtract");
-		rdbtnSub.setBackground(new Color(51,204,255));
-		rdbtnSub.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		operatorGroup.add(rdbtnSub);
-		OperationPanel.add(rdbtnSub);
-		OperationPanel.setBackground(new Color(51,204,255));*/
 
 		//--------------Data Panel--------------------------------------------------
 
@@ -170,7 +134,7 @@ public class GTG_NumPad extends JPanel {
 		incomingData.setBackground(Color.lightGray);
 		incomingData.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		incomingData.setEditable(false);
-		incomingData.setText("0");
+		incomingData.setText(input+"");
 		DatafieldPanel.add(incomingData);
 
 		lblOperator = new JLabel("set");
@@ -203,15 +167,6 @@ public class GTG_NumPad extends JPanel {
 	private class ButtonHandler implements ActionListener,KeyListener{
 		@Override
 		public void actionPerformed(ActionEvent ea) {
-			/*if(rdbtnSet.isSelected()){
-				
-			}
-			else if(rdbtnAdd.isSelected()){
-				
-			}
-			else{
-				
-			}*/
 			JButton buttonPressed = (JButton) ea.getSource();
 			if(buttonPressed.getText()=="Clear"){
 				currentExpr.setText("");

@@ -1,28 +1,26 @@
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.JPanel;
+import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class GTG_Inventory extends JPanel {
 
 	JPanel buttonPanel;
-	
+	JTable table;
 	public GTG_Inventory() {
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		setLayout(new BorderLayout());
 		GTG_TableDisplay tableDisplay = new GTG_TableDisplay(GTG_Utility.DB.getRScolors());
 		add(tableDisplay);
-		JTable table = tableDisplay.getTable();
+		table = tableDisplay.getTable();
 		table.addMouseListener(new TableClick());
 		JPanel optionPanel = new JPanel();
-		optionPanel.setLayout(new GridLayout());
+		optionPanel.setLayout(new FlowLayout());
+		
 	}
 	private class TableClick implements MouseListener{
 
@@ -50,7 +48,15 @@ public class GTG_Inventory extends JPanel {
 			JTable target = (JTable) e.getSource();
 			int row = target.getSelectedRow();
 			int column = target.getSelectedColumn();
+			int columnCount = target.getColumnCount();
 			System.out.println(row+" | "+column);
+			String[] selectedInfo = new String[columnCount];
+		
+			for(int i=0;i<columnCount;i++){
+				selectedInfo[i] = (String) table.getValueAt(row, i);
+				
+			}
+			
 		}
 
 		@Override

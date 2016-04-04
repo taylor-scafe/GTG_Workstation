@@ -4,12 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
@@ -62,6 +60,7 @@ public class GTG_OrderForm extends JPanel implements ActionListener{
 		lCustState = new JLabel("State:");
 		jcbCustState = GTG_Utility.SimpleSQLComboBox(GTG_Utility.DB.getRSstates());
 		jcbCustState.setBackground(Color.white);
+		jcbCustState.setSelectedItem("MO");
 		lcustZip = new JLabel("Zip:");
 		custZip = new JTextField(5);
 		
@@ -77,6 +76,7 @@ public class GTG_OrderForm extends JPanel implements ActionListener{
 		btState = new JLabel("State");
 		jcbBillToState  = GTG_Utility.SimpleSQLComboBox(GTG_Utility.DB.getRSstates());
 		jcbBillToState.setBackground(Color.white);
+		jcbBillToState.setSelectedItem("MO");
 		btZip = new JLabel("Zip:");
 		tbtZip = new JTextField(5);
 		
@@ -92,6 +92,7 @@ public class GTG_OrderForm extends JPanel implements ActionListener{
 		stState = new JLabel("State");
 		jcbShipToState = GTG_Utility.SimpleSQLComboBox(GTG_Utility.DB.getRSstates());
 		jcbShipToState.setBackground(Color.white);
+		jcbShipToState.setSelectedItem("MO");
 		stZip = new JLabel("Zip:");
 		tstZip= new JTextField(5);
 		
@@ -254,6 +255,7 @@ public class GTG_OrderForm extends JPanel implements ActionListener{
 		JCheckBox b = ((JCheckBox)e.getSource());
 		if(b.equals(existingCust)){
 			//WRITE REAL LOGIC HERE
+			@SuppressWarnings("unused")
 			int i = 5;
 		}
 		else if(b.equals(diffBillTo)){

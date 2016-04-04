@@ -50,7 +50,7 @@ public class GTG_MainGUI extends JFrame{
 		mainOrderTable.addOrderLine();
 		//newOrderLine = new JButton("New Order Line");
 		//jpPointOfSale.add(newOrderLine,BorderLayout.SOUTH);
-		jpMaterialInventory.add(new GTG_NumPad());
+		jpMaterialInventory.add(new GTG_NumPad(0));
 		
 		add(tabbedPane);
 		setVisible(true);
