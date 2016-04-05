@@ -17,7 +17,7 @@ public class GTG_OrderTable extends JPanel {
 	private int y = 0;
 	private int x = 0;
 	GridBagLayout orderTable;
-	public GTG_OrderTable() {
+	public void GTG_OrderTable() {
 		orderTable = new GridBagLayout();
 		orderTable.columnWidths = new int[]{0, 0, 0};
 		orderTable.rowHeights = new int[]{0, 0};

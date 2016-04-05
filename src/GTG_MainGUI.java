@@ -44,13 +44,16 @@ public class GTG_MainGUI extends JFrame{
 		JScrollPane scpInventory = new JScrollPane(new GTG_Inventory());
 		jpOrderManager.add(scpInventory);
 		mainOrderTable = new GTG_OrderTable();
-		jpPointOfSale.add(mainOrderTable);
-		jpOrderForm.add(new GTG_OrderForm());
+		
 		mainOrderTable.addOrderLine();
 		mainOrderTable.addOrderLine();
+		jpPointOfSale.add(new GTG_OrderForm());
+		//JScrollPane orderScroll = new JScrollPane(mainOrderTable,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//jpPointOfSale.add(orderScroll);
+		//jpPointOfSale.add(new GTG_NumPad(0));
 		//newOrderLine = new JButton("New Order Line");
 		//jpPointOfSale.add(newOrderLine,BorderLayout.SOUTH);
-		jpMaterialInventory.add(new GTG_NumPad(0));
+		//jpMaterialInventory.add(new GTG_NumPad(0));
 		
 		add(tabbedPane);
 		setVisible(true);

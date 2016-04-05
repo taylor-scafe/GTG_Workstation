@@ -19,7 +19,7 @@ public class GTG_DB_Interface{
 		if(GTG_DB.OpenSQLConnection()){
 			RSsizes = GTG_DB.executeSELECT("SELECT sizeName FROM size");
 			RScolors = GTG_DB.executeSELECT("SELECT colorName FROM color");
-			RSinventory = GTG_DB.executeSELECT("SELECT * FROM inventory");
+			RSinventory = GTG_DB.executeSELECT("SELECT product.productName, size.sizeName ,color.colorName, inventory.quantity FROM inventory LEFT JOIN product ON inventory.productID = product.productID LEFT JOIN size ON inventory.sizeID = size.sizeID LEFT JOIN color ON inventory.colorID = color.colorID ORDER BY productName ASC");
 			RSstates = GTG_DB.executeSELECT("select postalCode from state");
 			GTG_DB.CloseSQLConnection();
 		}

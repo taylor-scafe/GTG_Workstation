@@ -26,7 +26,7 @@ import javax.swing.border.EmptyBorder;
  *  -MAKE CALCULATION LIVE
  */
 @SuppressWarnings("serial")
-public class GTG_NumPad extends JPanel {
+public abstract class GTG_NumPad extends JPanel {
 	
 	private JButton btnDigit1, btnDigit2, btnDigit3, btnDigit4, btnDigit5, btnDigit6, btnDigit7, btnDigit8, btnDigit9, btnDigit0;
 	private JButton btnADD, btnSUBTRACT, btnBackspace, btnMULTPLY, btnClear, btnLeftParen, btnRightParen, btnExecute;
@@ -34,7 +34,7 @@ public class GTG_NumPad extends JPanel {
 	JLabel lblOperator, lblEquals;
 	
 	private ButtonHandler bh;
-	public GTG_NumPad(int input) {
+	public GTG_NumPad() {
 		//super("GTG Calculator");
 		setBackground(Color.BLUE);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -130,20 +130,19 @@ public class GTG_NumPad extends JPanel {
 		DatafieldPanel.setBackground(new Color(51,204,255));
 		add(DatafieldPanel, BorderLayout.NORTH);
 
-		incomingData = new JTextField(6);
+		/*incomingData = new JTextField(6);
 		incomingData.setBackground(Color.lightGray);
 		incomingData.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		incomingData.setEditable(false);
-		incomingData.setText(input+"");
-		DatafieldPanel.add(incomingData);
+		incomingData.setText("");
+		DatafieldPanel.add(incomingData);*/
 
-		lblOperator = new JLabel("set");
+		/*lblOperator = new JLabel("set");
 		lblOperator.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		DatafieldPanel.add(lblOperator);
-
-		currentExpr = new JTextField(6);
+*/
+		currentExpr = new JTextField(20);
 		currentExpr.setBackground(Color.lightGray);
-
 		currentExpr.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		currentExpr.setText("");
 		currentExpr.setEditable(false);
@@ -161,9 +160,13 @@ public class GTG_NumPad extends JPanel {
 
 		//pack();
 		setVisible(true);
-
-		//------------Action Handlers----------------------------------------------
 	}
+		//-----------Startup and End-----------------------------------------------
+	public void setStart(String input){
+		currentExpr.setText(input);
+	}
+		//------------Action Handlers----------------------------------------------
+	
 	private class ButtonHandler implements ActionListener,KeyListener{
 		@Override
 		public void actionPerformed(ActionEvent ea) {
@@ -231,7 +234,6 @@ public class GTG_NumPad extends JPanel {
 		}catch(Exception e){e.printStackTrace();}
 		return false;
 	}
-	
 
 	private static class math{
 		private static final String numbers = "1234567890";
@@ -463,6 +465,13 @@ public class GTG_NumPad extends JPanel {
 						
 			}
 			return iResult;
+		}
+	}
+	
+	abstract class ExecuteListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent ea) {
+			
 		}
 	}
 }
