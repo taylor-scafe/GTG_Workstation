@@ -11,15 +11,19 @@ public class GTG_DB_Interface{
 	//SQL Queue
 	private boolean updateNeeded;
 	private ArrayList<String> updateList = new ArrayList<String>();
-	
+	private String connectionURL;
 	
 	public GTG_DB_Interface(String connectionURL) {
-		
+		this.connectionURL = connectionURL;
 		GTG_DB = new SQLDatabase(connectionURL);
 		if(GTG_DB.OpenSQLConnection()){
 			RSsizes = GTG_DB.executeSELECT("SELECT sizeName FROM size");
 			RScolors = GTG_DB.executeSELECT("SELECT colorName FROM color");
-			RSinventory = GTG_DB.executeSELECT("SELECT product.productName, size.sizeName ,color.colorName, inventory.quantity FROM inventory LEFT JOIN product ON inventory.productID = product.productID LEFT JOIN size ON inventory.sizeID = size.sizeID LEFT JOIN color ON inventory.colorID = color.colorID ORDER BY productName ASC");
+			RSinventory = GTG_DB.executeSELECT("SELECT product.productName, size.sizeName ,"
+					+ "color.colorName, inventory.quantity FROM inventory LEFT JOIN product ON inventory.productID = product.productID LEFT JOIN size ON inventory.sizeID = size.sizeID"
+					+ " LEFT JOIN color ON inventory.colorID = color.colorID");
+			//REMOVED 'ORDER BY productName ASC' SO UPDATES WILL WORK WITH ROW NUMBERS THAT 
+			//CORRISPOND TO ID'S, BECAUSE ID IS NOT SELECTED
 			RSstates = GTG_DB.executeSELECT("select postalCode from state");
 			GTG_DB.CloseSQLConnection();
 		}
@@ -28,11 +32,24 @@ public class GTG_DB_Interface{
 		}
 	}
 	public void runQueue(){
+		
 		//Open Connection
+		GTG_DB.OpenSQLConnection();
+		
 		//Run all SQL in queue
+		for(String stmt : updateList){
+			GTG_DB.executeINSERT(stmt);
+			//System.out.println(stmt);
+		}
+		
 		//Clear Queue
+		updateList = new ArrayList<String>();
+		
 		//Set updateNeeded = false
+		updateNeeded = false;
+		
 		//Close Connection
+		GTG_DB.CloseSQLConnection();
 	}
 	public Object[][] getRSshirtTypes() {
 		return RSshirtTypes;

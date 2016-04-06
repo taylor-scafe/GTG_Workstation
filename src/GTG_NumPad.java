@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -26,11 +27,11 @@ import javax.swing.border.EmptyBorder;
  *  -MAKE CALCULATION LIVE
  */
 @SuppressWarnings("serial")
-public abstract class GTG_NumPad extends JPanel {
+public class GTG_NumPad extends JPanel{
 	
 	private JButton btnDigit1, btnDigit2, btnDigit3, btnDigit4, btnDigit5, btnDigit6, btnDigit7, btnDigit8, btnDigit9, btnDigit0;
-	private JButton btnADD, btnSUBTRACT, btnBackspace, btnMULTPLY, btnClear, btnLeftParen, btnRightParen, btnExecute;
-	JTextField currentExpr,incomingData, result; 
+	private JButton btnADD, btnSUBTRACT, btnBackspace, btnMULTPLY, btnClear, btnLeftParen, btnRightParen, btnSave;
+	JTextField currentExpr, result; 
 	JLabel lblOperator, lblEquals;
 	
 	private ButtonHandler bh;
@@ -43,7 +44,7 @@ public abstract class GTG_NumPad extends JPanel {
 
 		//--------------Number Panel-----------------------------------------------
 		this.bh = new ButtonHandler();
-		this.addKeyListener(bh);
+
 		JPanel NumPadPanel = new JPanel();
 		add(NumPadPanel, BorderLayout.CENTER);
 		NumPadPanel.setLayout(new GridLayout(0, 3, 0, 0));
@@ -112,16 +113,18 @@ public abstract class GTG_NumPad extends JPanel {
 		btnClear = new JButton("Clear");
 		NumPadPanel.add(btnClear);
 		
-		btnExecute = new JButton("Execute");
+		btnSave = new JButton("Save");
 		
-		NumPadPanel.add(btnExecute);
-		
+		NumPadPanel.add(btnSave);
+
 		Component [] buttons = NumPadPanel.getComponents();
 		for(Component c : buttons){
 			JButton b = ((JButton)c);
-			b.addActionListener(bh);
 			b.setBackground(Color.lightGray);
 			b.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			if(!b.equals(btnSave)){
+				b.addActionListener(bh);
+			}
 		}
 
 		//--------------Data Panel--------------------------------------------------
@@ -145,10 +148,12 @@ public abstract class GTG_NumPad extends JPanel {
 		currentExpr.setBackground(Color.lightGray);
 		currentExpr.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		currentExpr.setText("");
-		currentExpr.setEditable(false);
+		currentExpr.setEditable(true);
+		currentExpr.addKeyListener(new KeyHandler());
 		DatafieldPanel.add(currentExpr);
 
 		lblEquals = new JLabel("=");
+		lblEquals.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		DatafieldPanel.add(lblEquals);
 
 		result =  new JTextField(6);
@@ -165,12 +170,16 @@ public abstract class GTG_NumPad extends JPanel {
 	public void setStart(String input){
 		currentExpr.setText(input);
 	}
+	public void append(String s){
+		currentExpr.setText(currentExpr.getText() + s);
+	}
 		//------------Action Handlers----------------------------------------------
 	
-	private class ButtonHandler implements ActionListener,KeyListener{
+	private class ButtonHandler implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent ea) {
 			JButton buttonPressed = (JButton) ea.getSource();
+			
 			if(buttonPressed.getText()=="Clear"){
 				currentExpr.setText("");
 			}
@@ -179,31 +188,25 @@ public abstract class GTG_NumPad extends JPanel {
 				try{
 					currentExpr.setText(currentExpr.getText().substring(0, currentExpr.getText().length()-1));
 				}catch(Exception e){}
-				}
-			else if(buttonPressed.getText() == "Execute"){
-				if(!doMath()){
-					JOptionPane.showMessageDialog(null, "Invalid Input");
-				}
 			}
 			else{
 				currentExpr.setText(currentExpr.getText()+buttonPressed.getText());
 			}
+			doMath();
 		}
-
-		@Override
-		public void keyTyped(KeyEvent e) {
-			System.out.println("Char: " + e.getKeyChar());
-			
-		}
-
-		@Override
-		public void keyPressed(KeyEvent e) {System.out.println("Char: " + e.getKeyChar());}
-	
-		@Override
-		public void keyReleased(KeyEvent e) {System.out.println("Char: " + e.getKeyChar());}
 	}
+	private class KeyHandler implements KeyListener{
+
+		@Override
+		public void keyTyped(KeyEvent e) {doMath();}
 	
-	private boolean doMath(){
+		@Override
+		public void keyReleased(KeyEvent e) {doMath();}
+
+		@Override
+		public void keyPressed(KeyEvent e) {doMath();}
+	}
+	public boolean doMath(){
 		String expr = currentExpr.getText();
 		try{
 			ArrayList<Character> aExpr = new ArrayList<Character>();
@@ -211,27 +214,12 @@ public abstract class GTG_NumPad extends JPanel {
 				aExpr.add(expr.charAt(i));
 			}
 			int iResult = math.eval(aExpr);
-			//System.out.println("iResult: " + iResult);
-/*			if(rdbtnSet.isSelected()){
-				result.setText("" + iResult);
-				currentExpr.setText("");
-				return true;
-			}
-			else if(rdbtnAdd.isSelected()){
-				int iIncoming = Integer.parseInt(incomingData.getText());
-				int iFinal = iResult + iIncoming;
-				result.setText("" + iFinal);
-				currentExpr.setText("");
-				return true;
-			}
-			else{*/
-				int iIncoming = Integer.parseInt(incomingData.getText());
-				int iFinal = iResult - iIncoming;
-				result.setText("" + iFinal);
-				currentExpr.setText("");
-				return true;
-			//}
-		}catch(Exception e){e.printStackTrace();}
+			result.setText("" + iResult);
+			return true;
+				
+		}catch(Exception e){
+			//e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -467,11 +455,18 @@ public abstract class GTG_NumPad extends JPanel {
 			return iResult;
 		}
 	}
+
+
+	public JButton getSaveButton(){
+		return btnSave;
+	}
 	
-	abstract class ExecuteListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent ea) {
-			
-		}
+	public int getResult() {
+		//System.out.println(result.getText());
+		return Integer.parseInt(result.getText());
+	}
+
+	public void setIncoming(int incoming) {
+		currentExpr.setText("" + incoming);
 	}
 }

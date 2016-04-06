@@ -31,5 +31,4 @@ public class GTG_TableDisplay extends JScrollPane {//Creates a scrollable Table 
 	public JTable getTable(){
 		return table;
 	}
-
 }

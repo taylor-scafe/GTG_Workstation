@@ -10,9 +10,8 @@ import javax.swing.JTabbedPane;
 
 @SuppressWarnings("serial")
 public class GTG_MainGUI extends JFrame{
-	private GTG_OrderTable mainOrderTable;
 	private JPanel jpMaterialInventory, jpOrderManager, jpPointOfSale,jpOrderForm;
-	
+	private GTG_OrderForm mainOrderTable;
 	//End of Graphic Elements
 	public GTG_MainGUI(String credentials){
 		//Initialize window
@@ -43,7 +42,7 @@ public class GTG_MainGUI extends JFrame{
 		//JScrollPane scrollPane = new JScrollPane(new GTG_TableDisplay(GTG_Utility.DB.getRSsizes()));
 		JScrollPane scpInventory = new JScrollPane(new GTG_Inventory());
 		jpOrderManager.add(scpInventory);
-		mainOrderTable = new GTG_OrderTable();
+		mainOrderTable = new GTG_OrderForm();
 		
 		mainOrderTable.addOrderLine();
 		mainOrderTable.addOrderLine();

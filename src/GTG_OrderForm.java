@@ -319,7 +319,7 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 		masterPanel.add(orderArea);
 		//orderScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
 	}
-	private void addOrderLine(){
+	public void addOrderLine(){
 		x=0;
 		JTextField jtfQuantity = new JTextField(2);
 		jtfQuantity.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -331,18 +331,18 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 		JComboBox<String> jcbShirtStyle = GTG_Utility.SimpleSQLComboBox(GTG_Utility.DB.getRScolors());
 		orderArea.add(jcbShirtStyle, getConstraints(x,y));
 		x++;
-		JTextField jtfDescription = new JTextField(20);
+		JTextField jtfDescription = new JTextField(17);
 		jtfDescription.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		orderArea.add(jtfDescription, getConstraints(x,y));
 		x++;
 		JComboBox<String> jcbColor = GTG_Utility.SimpleSQLComboBox(GTG_Utility.DB.getRScolors());
 		orderArea.add(jcbColor, getConstraints(x,y));
 		x++;
-		JTextField jtfPrice = new JTextField(10);
+		JTextField jtfPrice = new JTextField(7);
 		jtfPrice.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		orderArea.add(jtfPrice, getConstraints(x,y));
 		x++;
-		JTextField jtfTotal = new JTextField(10);
+		JTextField jtfTotal = new JTextField(7);
 		jtfTotal.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		orderArea.add(jtfTotal, getConstraints(x,y));
 		x++;
