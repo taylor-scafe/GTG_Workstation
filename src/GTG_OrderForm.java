@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -61,17 +63,26 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 		GTG_OrderTable();
 		
 		
-		
-		
-		
-		
 		this.setViewportView(masterPanel);
 		vertical = getVerticalScrollBar();
 		this.setVisible(true);
 	}
 
 
-
+	private void mirrorToBilling(){
+		String [] custInfo = getCustomerInfo();
+		tbtAddr.setText(custInfo[6]);
+		tbtCity.setText(custInfo[7]);
+		jcbBillToState.setSelectedIndex(jcbCustState.getSelectedIndex());
+		tbtZip.setText(custInfo[9]);
+	}
+	private void mirrorToShipping(){
+		String [] custInfo = getCustomerInfo();
+		tstAddr.setText(custInfo[6]);
+		tstCity.setText(custInfo[7]);
+		jcbShipToState.setSelectedIndex(jcbCustState.getSelectedIndex());
+		tstZip.setText(custInfo[9]);
+	}
 	private void GTG_CustomerForm(){
 		customerForm = new JPanel();
 		
@@ -92,26 +103,36 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 		
 		firstName = new JLabel("First Name:");
 		tfirstName = new JTextField(8);
+		tfirstName.addKeyListener(new typeListener());
 		lastName = new JLabel("Last Name:");
 		tlastName= new JTextField(8);
+		tlastName.addKeyListener(new typeListener());
 		phoneNum = new JLabel("Phone Number:");
 		tphoneNum = new JTextField(9);
+		tphoneNum.addKeyListener(new typeListener());
 		faxNum = new JLabel("Fax Number:");
 		tfaxNum = new JTextField(9);
+		tfaxNum.addKeyListener(new typeListener());
 		email = new JLabel("Email:");
 		temail = new JTextField(20);
+		temail.addKeyListener(new typeListener());
 		customerPONum = new JLabel("Customer PO#");
 		tcustomerPONum = new JTextField(8);		
+		tcustomerPONum.addKeyListener(new typeListener());
 		lcustAddr = new JLabel("Address:");
 		custAddr = new JTextField(15);
+		custAddr.addKeyListener(new typeListener());
 		lcustCity = new JLabel("City:");
 		custCity = new JTextField(8);
+		custCity.addKeyListener(new typeListener());
 		lCustState = new JLabel("State:");
 		jcbCustState = GTG_Utility.SimpleSQLComboBox(GTG_Utility.DB.getRSstates());
 		jcbCustState.setBackground(Color.white);
 		jcbCustState.setSelectedItem("MO");
+		jcbCustState.addActionListener(new typeListener());
 		lcustZip = new JLabel("Zip:");
 		custZip = new JTextField(5);
+		custZip.addKeyListener(new typeListener());
 
 		ldiffBillTo = new JLabel("Different Billing Address:");
 		diffBillTo = new JCheckBox();
@@ -494,6 +515,48 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 			JComboBox b = (JComboBox)e.getSource();
 			sCurrentCust = ((String)b.getSelectedItem());
 			fillCustInfo();
+			mirrorToBilling();
+			mirrorToShipping();
+		}
+		
+	}
+	private class typeListener implements KeyListener,ActionListener{
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			if(!diffBillTo.isSelected()){
+				mirrorToBilling();
+			}
+			if(!diffShipTo.isSelected()){
+				mirrorToShipping();
+			}
+		}
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(!diffBillTo.isSelected()){
+				mirrorToBilling();
+			}
+			if(!diffShipTo.isSelected()){
+				mirrorToShipping();
+			}
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if(!diffBillTo.isSelected()){
+				mirrorToBilling();
+			}
+			if(!diffShipTo.isSelected()){
+				mirrorToShipping();
+			}
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(!diffBillTo.isSelected()){
+				mirrorToBilling();
+			}
+			if(!diffShipTo.isSelected()){
+				mirrorToShipping();
+			}
 		}
 		
 	}
@@ -524,6 +587,7 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 				jcbBillToState.setEnabled(true);
 			}
 			else{
+				mirrorToBilling();
 				tbillTo.setEditable(false);
 				tbtAddr.setEditable(false);
 				tbtCity.setEditable(false);
@@ -540,6 +604,7 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 				jcbShipToState.setEnabled(true);
 			}
 			else{
+				mirrorToShipping();
 				tshipTo.setEditable(false);
 				tstAddr.setEditable(false);
 				tstCity.setEditable(false);
@@ -548,5 +613,7 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 			}
 		}
 
+		
+		
 	}
 }
