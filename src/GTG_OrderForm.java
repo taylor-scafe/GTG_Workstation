@@ -71,6 +71,7 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 
 	private void mirrorToBilling(){
 		String [] custInfo = getCustomerInfo();
+		tbillTo.setText(custInfo[0] + " " + custInfo[1]);
 		tbtAddr.setText(custInfo[6]);
 		tbtCity.setText(custInfo[7]);
 		jcbBillToState.setSelectedIndex(jcbCustState.getSelectedIndex());
@@ -78,6 +79,7 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 	}
 	private void mirrorToShipping(){
 		String [] custInfo = getCustomerInfo();
+		tshipTo.setText(custInfo[0] + " " + custInfo[1]);
 		tstAddr.setText(custInfo[6]);
 		tstCity.setText(custInfo[7]);
 		jcbShipToState.setSelectedIndex(jcbCustState.getSelectedIndex());
