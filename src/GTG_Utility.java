@@ -26,7 +26,15 @@ public static GTG_DB_Interface DB;
 
 		JComboBox<String> returnBox = new JComboBox<String>();
 		for(int i=1;i<resultSet.length;i++){
-			returnBox.addItem(resultSet[i][0].toString());
+			String sOut = "";
+			for(int j = 0; j < resultSet[i].length; j++){
+				//System.out.println(resultSet[i][j].toString());
+				sOut += resultSet[i][j].toString();
+				if(j != resultSet[i].length -1){
+					sOut += ",";
+				}
+			}
+			returnBox.addItem(sOut);
 		}
 		returnBox.setSelectedIndex(0);
 		return returnBox;

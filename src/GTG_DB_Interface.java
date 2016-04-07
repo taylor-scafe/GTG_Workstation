@@ -75,6 +75,17 @@ public class GTG_DB_Interface{
 	public void addTOupdateList(String input){
 		updateList.add(input);
 	}
+	public Object[][] executeSELECT(String SQL){
+		//Open Connection
+			GTG_DB.OpenSQLConnection();
+				
+			Object [][] results = GTG_DB.executeSELECT(SQL);
+
+			//Close Connection
+			GTG_DB.CloseSQLConnection();
+			
+			return results;
+	}
 	public boolean isConnected() {
 		boolean output = GTG_DB.OpenSQLConnection();
 		GTG_DB.CloseSQLConnection();

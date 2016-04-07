@@ -26,22 +26,25 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 
 	private JLabel lexistingCust,ldiffBillTo,ldiffShipTo,firstName,lastName,phoneNum,faxNum,email,customerPONum,
 	billTo,btAddr,btCity,btState,btZip,shipTo,stAddr,stCity,stState,stZip,lCustState,
-	lcustAddr,lcustCity,lcustZip;
+	lcustAddr,lcustCity,lcustZip,existingCustsLabel;
 
 	private JTextField tfirstName,tlastName,tphoneNum,tfaxNum,temail,tcustomerPONum,
 	tbillTo,tbtAddr,tbtCity,tbtZip,tshipTo,tstAddr,tstCity,tstZip,
 	custAddr,custCity,custZip;
 
 	private JPanel custInfo,billInfo,shipInfo,shipInfoSub1,shipInfoSub2,billInfoSub1,billInfoSub2,
-	custInfoSub3,custInfoSub1,custInfoSub2,custInfoSub0,shipInfoSub0,billInfoSub0,orderArea,customerForm,spacer,spacer1,masterPanel;
+	custInfoSub3,custInfoSub1,custInfoSub2,custInfoSub0,shipInfoSub0,billInfoSub0,orderArea,
+	customerForm,spacer,spacer1,masterPanel,customerFormCheckPane,existCustDropDownPane;
 
 	private JCheckBox existingCust,diffBillTo,diffShipTo;
 
-	private JComboBox<String> jcbCustState,jcbBillToState,jcbShipToState;
+	private JComboBox<String> jcbCustState,jcbBillToState,jcbShipToState,jcbCustomers;
 
 	public JScrollBar vertical;
 	
 	private JButton addNewRecord;
+	
+	private String sCurrentCust;
 
 	public GTG_OrderForm(){
 		super(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -80,6 +83,13 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 		lexistingCust = new JLabel("Existing Customer:");
 		existingCust = new JCheckBox();
 		existingCust.addActionListener(this);
+		
+		customerFormCheckPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		customerFormCheckPane.add(lexistingCust);
+		customerFormCheckPane.add(existingCust);
+		
+		customerForm.add(customerFormCheckPane);
+		
 		firstName = new JLabel("First Name:");
 		tfirstName = new JTextField(8);
 		lastName = new JLabel("Last Name:");
@@ -139,9 +149,7 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 		custInfoSub1 = new JPanel();
 		custInfoSub2 = new JPanel();
 		custInfoSub3 = new JPanel();
-
-		custInfoSub0.add(lexistingCust);
-		custInfoSub0.add(existingCust);
+				
 		custInfoSub1.add(firstName);
 		custInfoSub1.add(tfirstName);
 		custInfoSub1.add(lastName);
@@ -257,18 +265,57 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 		customerForm.setVisible(true);
 		
 		masterPanel.add(customerForm);
-
+		
+		String SQL = "select lastName,firstName from customer order by lastName";
+		jcbCustomers = GTG_Utility.SimpleSQLComboBox(GTG_Utility.DB.executeSELECT(SQL));
+		jcbCustomers.addActionListener(new CustListListener());
+		
+		
+		existingCustsLabel = new JLabel("Customer List:");
 	}
 
+	private void fillCustInfo(){
+		String [] name = sCurrentCust.split(",");
+		String SQL = "select * from fullCustInfo where firstName ="
+				+ " '"+ name[1] +"' and lastName = '" +name[0] +  "'";
+		Object [][] results = GTG_Utility.DB.executeSELECT(SQL);
+		String [] cInfo = new String [9];
+		for(int i = 0; i < 9; i ++){
+			cInfo[i] = results[1][i] + "";
+		}
+		tfirstName.setText(cInfo[0]);
+		tlastName.setText(cInfo[1]);
+		if(!cInfo[2].equals("null")){
+			tphoneNum.setText(cInfo[2]);
+		}
+		if(!cInfo[3].equals("null")){
+			System.out.println(cInfo[3]);
+			tfaxNum.setText(cInfo[3]);
+		}
+		if(!cInfo[4].equals("null")){
+			temail.setText(cInfo[4]);
+		}
+		//IMPLEMENT CUSTOMER PO NUMBER!!!
+		
+		custAddr.setText(cInfo[5]);
+		custCity.setText(cInfo[6]);
+		jcbCustState.setSelectedIndex(Integer.parseInt(cInfo[7])-1);
+		custZip.setText(cInfo[8]);
+	}
+	
 	//custInfo,billInfo,shipInfo,
 	public String [] getCustomerInfo(){
-		String [] aOut = new String[6];
+		String [] aOut = new String[10];
 		aOut[0] = tfirstName.getText();
 		aOut[1] = tlastName.getText();
 		aOut[2] = tphoneNum.getText();
 		aOut[3] = tfaxNum.getText();
 		aOut[4] = temail.getText();
 		aOut[5] = tcustomerPONum.getText();
+		aOut[6] = custAddr.getText();
+		aOut[7] = custCity.getText();
+		aOut[8] = ((String)jcbCustState.getSelectedItem());
+		aOut[9] = custZip.getText();
 		return aOut;
 	}
 	public String [] getBillingInfo(){
@@ -440,14 +487,33 @@ public class GTG_OrderForm extends JScrollPane implements ActionListener{
 			vertical.setValue(vertical.getMaximum());
 		}
 	}
-
+	private class CustListListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			@SuppressWarnings("rawtypes")
+			JComboBox b = (JComboBox)e.getSource();
+			sCurrentCust = ((String)b.getSelectedItem());
+			fillCustInfo();
+		}
+		
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JCheckBox b = ((JCheckBox)e.getSource());
 		if(b.equals(existingCust)){
-			//WRITE REAL LOGIC HERE
-			@SuppressWarnings("unused")
-			int i = 5;
+			if(b.isSelected()){
+				existCustDropDownPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				existCustDropDownPane.add(existingCustsLabel);
+				existCustDropDownPane.add(jcbCustomers);
+				customerForm.add(existCustDropDownPane,1);
+				customerForm.setVisible(false);
+				customerForm.setVisible(true);
+			}
+			else{
+				customerForm.remove(existCustDropDownPane);
+				customerForm.setVisible(false);
+				customerForm.setVisible(true);
+			}
 		}
 		else if(b.equals(diffBillTo)){
 			if(b.isSelected()){
